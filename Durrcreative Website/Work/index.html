@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Work | DurrCreative</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { background: #0a0a0a; color: #f0ede6; font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1.2rem 3rem;
+  background: rgba(10,10,10,0.9); backdrop-filter: blur(8px); z-index: 100;
+}
+.nav-logo { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; height: 38px; }
+.nav-logo img { height: 38px; width: 38px; object-fit: contain; }
+.nav-logo span { font-family: 'Bebas Neue'; font-size: 1.6rem; letter-spacing: 2px; color: #f0ede6; line-height: 1; }
+.nav-links { display: flex; gap: 2rem; align-items: center; }
+.nav-links a { color: #f0ede6; text-decoration: none; font-size: 0.9rem; letter-spacing: 1px; text-transform: uppercase; opacity: 0.8; transition: opacity 0.2s; }
+.nav-links a:hover { opacity: 1; color: #c8a96e; }
+
+/* PAGE HEADER */
+.page-header { padding: 10rem 3rem 4rem; border-bottom: 1px solid rgba(200,169,110,0.15); }
+.section-label { font-size: 0.75rem; letter-spacing: 4px; text-transform: uppercase; color: #c8a96e; margin-bottom: 0.75rem; }
+.page-title { font-family: 'Bebas Neue'; font-size: clamp(3rem, 7vw, 6rem); letter-spacing: 2px; }
+
+/* TABS WRAP */
+.tabs-wrap {
+  position: sticky; top: 62px; z-index: 90;
+  background: rgba(10,10,10,0.95); backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(200,169,110,0.15);
+  overflow: hidden;
+}
+.tabs-wrap::after {
+  content: ''; position: absolute; top: 0; right: 0;
+  width: 3rem; height: 100%;
+  background: linear-gradient(to right, transparent, rgba(10,10,10,0.95));
+  pointer-events: none;
+}
+.tabs { display: flex; overflow-x: auto; padding: 0 2rem; scrollbar-width: none; }
+.tabs::-webkit-scrollbar { display: none; }
+.tab {
+  padding: 1.1rem 1.4rem; font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase;
+  color: #f0ede6; opacity: 0.5; cursor: pointer; white-space: nowrap;
+  border-bottom: 2px solid transparent; border-top: none; border-left: none; border-right: none;
+  transition: opacity 0.2s, border-color 0.2s; background: none; font-family: 'DM Sans', sans-serif;
+}
+.tab:hover { opacity: 0.8; }
+.tab.active { opacity: 1; color: #c8a96e; border-bottom: 2px solid #c8a96e; }
+
+/* WORK SECTIONS */
+.work-section { padding: 4rem 3rem; display: none; }
+.work-section.active { display: block; }
+.section-desc { font-size: 0.9rem; opacity: 0.5; letter-spacing: 1px; margin-bottom: 2.5rem; }
+.subsection { margin-bottom: 4rem; }
+.subsection-title { font-size: 0.72rem; letter-spacing: 3px; text-transform: uppercase; color: #c8a96e; margin-bottom: 1.2rem; padding-bottom: 0.6rem; border-bottom: 1px solid rgba(200,169,110,0.2); }
+
+/* DESKTOP GRIDS */
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+
+/* VIDEO CARD */
+.vid-card { position: relative; overflow: hidden; cursor: pointer; background: #111; aspect-ratio: 16/9; }
+.vid-card.portrait { aspect-ratio: 9/16; }
+.vid-card img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease, opacity 0.3s ease; }
+.vid-card:hover img { transform: scale(1.05); opacity: 0.45; }
+.vid-card .hover-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.6rem; padding: 1rem; opacity: 0; transition: opacity 0.3s ease; }
+.vid-card:hover .hover-overlay { opacity: 1; }
+.hover-overlay svg { width: 42px; height: 42px; flex-shrink: 0; }
+.hover-overlay .vid-title { font-family: 'Bebas Neue'; font-size: clamp(0.85rem, 1.5vw, 1.2rem); letter-spacing: 2px; color: #f0ede6; text-align: center; text-shadow: 0 2px 8px rgba(0,0,0,0.8); }
+
+/* CAROUSEL */
+.carousel-wrap { display: none; }
+.carousel { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; gap: 10px; scrollbar-width: none; padding-bottom: 0.5rem; }
+.carousel::-webkit-scrollbar { display: none; }
+.carousel .vid-card { flex: 0 0 88vw; scroll-snap-align: start; aspect-ratio: 16/9; }
+.carousel .vid-card.portrait { flex: 0 0 55vw; aspect-ratio: 9/16; }
+.carousel-dots { display: flex; justify-content: center; gap: 8px; margin-top: 1.2rem; }
+.carousel-dots span { width: 6px; height: 6px; border-radius: 50%; background: rgba(200,169,110,0.3); transition: background 0.2s; cursor: pointer; }
+.carousel-dots span.active { background: #c8a96e; }
+
+/* LIGHTBOX */
+.lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 999; align-items: center; justify-content: center; }
+.lightbox.active { display: flex; }
+.lightbox-inner { position: relative; width: 90vw; max-width: 1100px; aspect-ratio: 16/9; }
+.lightbox-inner.portrait-lb { aspect-ratio: 9/16; max-width: 420px; }
+.lightbox-inner iframe { width: 100%; height: 100%; border: none; }
+.lightbox-close { position: absolute; top: -2.5rem; right: 0; background: none; border: none; color: #f0ede6; font-size: 2rem; cursor: pointer; line-height: 1; opacity: 0.7; }
+.lightbox-close:hover { opacity: 1; color: #c8a96e; }
+
+/* FOOTER */
+footer { padding: 3rem; display: flex; flex-direction: column; align-items: center; gap: 0.75rem; border-top: 1px solid rgba(255,255,255,0.08); }
+footer img { height: 48px; width: 48px; object-fit: contain; opacity: 0.9; }
+.footer-name { font-family: 'Bebas Neue'; font-size: 1.8rem; letter-spacing: 3px; }
+.footer-sub { font-size: 0.8rem; letter-spacing: 3px; text-transform: uppercase; color: #c8a96e; }
+
+/* ── TABLET ── */
+@media (max-width: 1024px) {
+  nav { padding: 1.2rem 2rem; }
+  .work-section { padding: 3rem 2rem; }
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ── MOBILE ── */
+@media (max-width: 768px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-logo img { height: 30px; width: 30px; }
+  .nav-logo span { font-size: 1.2rem; }
+  .nav-links { gap: 1.2rem; }
+  .nav-links a { font-size: 0.75rem; }
+  .page-header { padding: 7rem 1.5rem 2.5rem; }
+  .tabs-wrap { top: 56px; }
+  .tabs { padding: 0 1rem; }
+  .tab { padding: 0.9rem 1rem; font-size: 0.7rem; }
+  .work-section { padding: 3rem 1.5rem; }
+  .subsection { margin-bottom: 3rem; }
+
+  /* Hide grids, show carousels */
+  .grid-3, .grid-2, .grid-4 { display: none; }
+  .carousel-wrap { display: block; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="/">
+    <img src="https://i.imgur.com/AYIKUL1.png" alt="DurrCreative Logo">
+    <span>DurrCreative</span>
+  </a>
+  <div class="nav-links">
+    <a href="/#work">Portfolio</a>
+    <a href="/#about">About</a>
+    <a href="https://forms.gle/rSC927vujt3GQrtS8" target="_blank">Contact</a>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <p class="section-label">Full Portfolio</p>
+  <h1 class="page-title">MY WORK</h1>
+</div>
+
+<!-- TABS -->
+<div class="tabs-wrap">
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('concerts', this)">Concerts & Artists</button>
+    <button class="tab" onclick="showTab('brands', this)">Brands</button>
+    <button class="tab" onclick="showTab('insta360', this)">Insta360</button>
+    <button class="tab" onclick="showTab('weddings', this)">Weddings</button>
+    <button class="tab" onclick="showTab('chicago', this)">Cinematic</button>
+    <button class="tab" onclick="showTab('editing', this)">Editing</button>
+    <button class="tab" onclick="showTab('social', this)">Social Media</button>
+  </div>
+</div>
+
+<!-- CONCERTS & ARTISTS -->
+<section class="work-section active" id="tab-concerts">
+  <p class="section-desc">Live events, artist films & concert coverage</p>
+  <div class="subsection">
+    <p class="subsection-title">Live Concerts</p>
+    <div class="grid-3">
+      <div class="vid-card" onclick="openLightbox('iQ1F2vVrxck')"><img src="https://img.youtube.com/vi/iQ1F2vVrxck/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">Align at The Salt Shed</span></div></div>
+      <div class="vid-card" onclick="openLightbox('nXTkekhBBXU')"><img src="https://img.youtube.com/vi/nXTkekhBBXU/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">The Treetops — Chop Shop</span></div></div>
+      <div class="vid-card" onclick="openLightbox('jM-cCGYsjf0')"><img src="https://img.youtube.com/vi/jM-cCGYsjf0/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">Hollyy at the Lakefront</span></div></div>
+    </div>
+    <div class="carousel-wrap"><div class="carousel" id="c-concerts-live">
+      <div class="vid-card" onclick="openLightbox('iQ1F2vVrxck')"><img src="https://img.youtube.com/vi/iQ1F2vVrxck/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">Align at The Salt Shed</span></div></div>
+      <div class="vid-card" onclick="openLightbox('nXTkekhBBXU')"><img src="https://img.youtube.com/vi/nXTkekhBBXU/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">The Treetops — Chop Shop</span></div></div>
+      <div class="vid-card" onclick="openLightbox('jM-cCGYsjf0')"><img src="https://img.youtube.com/vi/jM-cCGYsjf0/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">Hollyy at the Lakefront</span></div></div>
+    </div><div class="carousel-dots" id="d-concerts-live"></div></div>
+  </div>
+  <div class="subsection">
+    <p class="subsection-title">Artist Films</p>
+    <div class="grid-3">
+      <div class="vid-card" onclick="openLightbox('5owzq1XyDnY')"><img src="https://img.youtube.com/vi/5owzq1XyDnY/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">Changes — Tanner Dane</span></div></div>
+      <div class="vid-card" onclick="openLightbox('-0njUc5TDag')"><img src="https://img.youtube.com/vi/-0njUc5TDag/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">Cut Me Loose — Tanner Dane</span></div></div>
+      <div class="vid-card" onclick="openLightbox('cf02_QOoJ5w')"><img src="https://img.youtube.com/vi/cf02_QOoJ5w/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">Madi Skit</span></div></div>
+    </div>
+    <div class="carousel-wrap"><div class="carousel" id="c-artist">
+      <div class="vid-card" onclick="openLightbox('5owzq1XyDnY')"><img src="https://img.youtube.com/vi/5owzq1XyDnY/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">Changes — Tanner Dane</span></div></div>
+      <div class="vid-card" onclick="openLightbox('-0njUc5TDag')"><img src="https://img.youtube.com/vi/-0njUc5TDag/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">Cut Me Loose — Tanner Dane</span></div></div>
+      <div class="vid-card" onclick="openLightbox('cf02_QOoJ5w')"><img src="https://img.youtube.com/vi/cf02_QOoJ5w/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">Madi Skit</span></div></div>
+    </div><div class="carousel-dots" id="d-artist"></div></div>
+  </div>
+</section>
+
+<!-- BRANDS -->
+<section class="work-section" id="tab-brands">
+  <p class="section-desc">Commercial work, ads & brand content</p>
+  <div class="subsection">
+    <p class="subsection-title">Barlowe Sports</p>
+    <div class="grid-3">
+      <div class="vid-card" onclick="openLightbox('iI2e8YwY31U')"><img src="https://img.youtube.com/vi/iI2e8YwY31U/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">Barlowe Sports — Ad</span></div></div>
+    </div>
+    <div class="carousel-wrap"><div class="carousel" id="c-barlowe">
+      <div class="vid-card" onclick="openLightbox('iI2e8YwY31U')"><img src="https://img.youtube.com/vi/iI2e8YwY31U/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">Barlowe Sports — Ad</span></div></div>
+    </div><div class="carousel-dots" id="d-barlowe"></div></div>
+  </div>
+  <div class="subsection">
+    <p class="subsection-title">Liquid Solutions</p>
+    <div class="grid-4">
+      <div class="vid-card portrait" onclick="openLightbox('LGkM-asVcbk', true)"><img src="https://img.youtube.com/vi/LGkM-asVcbk/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">What Makes Ours Different?</span></div></div>
+      <div class="vid-card portrait" onclick="openLightbox('Qa8PODfCqL8', true)"><img src="https://img.youtube.com/vi/Qa8PODfCqL8/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">Why is Dust Control Important?</span></div></div>
+      <div class="vid-card portrait" onclick="openLightbox('jqLIBtIUCE4', true)"><img src="https://img.youtube.com/vi/jqLIBtIUCE4/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">What Sites Do We Take Care Of?</span></div></div>
+      <div class="vid-card portrait" onclick="openLightbox('wrVBoRZeZC4', true)"><img src="https://img.youtube.com/vi/wrVBoRZeZC4/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">How Does CC Work?</span></div></div>
+    </div>
+    <div class="carousel-wrap"><div class="carousel" id="c-liquid">
+      <div class="vid-card portrait" onclick="openLightbox('LGkM-asVcbk', true)"><img src="https://img.youtube.com/vi/LGkM-asVcbk/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">What Makes Ours Different?</span></div></div>
+      <div class="vid-card portrait" onclick="openLightbox('Qa8PODfCqL8', true)"><img src="https://img.youtube.com/vi/Qa8PODfCqL8/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">Why is Dust Control Important?</span></div></div>
+      <div class="vid-card portrait" onclick="openLightbox('jqLIBtIUCE4', true)"><img src="https://img.youtube.com/vi/jqLIBtIUCE4/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">What Sites Do We Take Care Of?</span></div></div>
+      <div class="vid-card portrait" onclick="openLightbox('wrVBoRZeZC4', true)"><img src="https://img.youtube.com/vi/wrVBoRZeZC4/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">How Does CC Work?</span></div></div>
+    </div><div class="carousel-dots" id="d-liquid"></div></div>
+  </div>
+  <div class="subsection">
+    <p class="subsection-title">@ChooseChicago Collaboration</p>
+    <div class="grid-3">
+      <div class="vid-card" onclick="openLightbox('BrdFoah0OKU')"><img src="https://img.youtube.com/vi/BrdFoah0OKU/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">I Really Really Like Chicago</span></div></div>
+      <div class="vid-card" onclick="openLightbox('fOt-YBbLaDQ')"><img src="https://img.youtube.com/vi/fOt-YBbLaDQ/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">Happy Birthday Chicago 189th</span></div></div>
+    </div>
+    <div class="carousel-wrap"><div class="carousel" id="c-choose">
+      <div class="vid-card" onclick="openLightbox('BrdFoah0OKU')"><img src="https://img.youtube.com/vi/BrdFoah0OKU/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">I Really Really Like Chicago</span></div></div>
+      <div class="vid-card" onclick="openLightbox('fOt-YBbLaDQ')"><img src="https://img.youtube.com/vi/fOt-YBbLaDQ/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">Happy Birthday Chicago 189th</span></div></div>
+    </div><div class="carousel-dots" id="d-choose"></div></div>
+  </div>
+</section>
+
+<!-- INSTA360 -->
+<section class="work-section" id="tab-insta360">
+  <p class="section-desc">Brand partnership content with Insta360</p>
+  <div class="subsection">
+    <p class="subsection-title">Horizontal Edits</p>
+    <div class="grid-2">
+      <div class="vid-card" onclick="openLightbox('wmFr2KBpzD4')"><img src="https://img.youtube.com/vi/wmFr2KBpzD4/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">Film the Moment, Hold the Memory</span></div></div>
+      <div class="vid-card" onclick="openLightbox('EfLlE6crA0Y')"><img src="https://img.youtube.com/vi/EfLlE6crA0Y/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">Chicago Edit 8K</span></div></div>
+    </div>
+    <div class="carousel-wrap"><div class="carousel" id="c-insta360-films">
+      <div class="vid-card" onclick="openLightbox('wmFr2KBpzD4')"><img src="https://img.youtube.com/vi/wmFr2KBpzD4/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">Film the Moment, Hold the Memory</span></div></div>
+      <div class="vid-card" onclick="openLightbox('EfLlE6crA0Y')"><img src="https://img.youtube.com/vi/EfLlE6crA0Y/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">Chicago Edit 8K</span></div></div>
+    </div><div class="carousel-dots" id="d-insta360-films"></div></div>
+  </div>
+  <div class="subsection">
+    <p class="subsection-title">Shorts & Reels</p>
+    <div class="grid-4">
+      <div class="vid-card portrait" onclick="openLightbox('uPNXpUO8NEM', true)"><img src="https://img.youtube.com/vi/uPNXpUO8NEM/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">Vertical All Frames</span></div></div>
+      <div class="vid-card portrait" onclick="openLightbox('kSL48rFjnww', true)"><img src="https://img.youtube.com/vi/kSL48rFjnww/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">S Curve Train</span></div></div>
+      <div class="vid-card portrait" onclick="openLightbox('JbftG6DHqSw', true)"><img src="https://img.youtube.com/vi/JbftG6DHqSw/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">John Hancock</span></div></div>
+      <div class="vid-card portrait" onclick="openLightbox('shKj0vzvSj0', true)"><img src="https://img.youtube.com/vi/shKj0vzvSj0/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">Unbox Video Reel</span></div></div>
+    </div>
+    <div class="carousel-wrap"><div class="carousel" id="c-insta360-shorts">
+      <div class="vid-card portrait" onclick="openLightbox('uPNXpUO8NEM', true)"><img src="https://img.youtube.com/vi/uPNXpUO8NEM/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">Vertical All Frames</span></div></div>
+      <div class="vid-card portrait" onclick="openLightbox('kSL48rFjnww', true)"><img src="https://img.youtube.com/vi/kSL48rFjnww/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">S Curve Train</span></div></div>
+      <div class="vid-card portrait" onclick="openLightbox('JbftG6DHqSw', true)"><img src="https://img.youtube.com/vi/JbftG6DHqSw/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">John Hancock</span></div></div>
+      <div class="vid-card portrait" onclick="openLightbox('shKj0vzvSj0', true)"><img src="https://img.youtube.com/vi/shKj0vzvSj0/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">Unbox Video Reel</span></div></div>
+    </div><div class="carousel-dots" id="d-insta360-shorts"></div></div>
+  </div>
+</section>
+
+<!-- WEDDINGS -->
+<section class="work-section" id="tab-weddings">
+  <p class="section-desc">Wedding films & celebration coverage</p>
+  <div class="grid-2">
+    <div class="vid-card" onclick="openLightbox('bSiEgT74rQI')"><img src="https://img.youtube.com/vi/bSiEgT74rQI/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">The Cleggs — Wedding Video</span></div></div>
+  </div>
+  <div class="carousel-wrap"><div class="carousel" id="c-weddings">
+    <div class="vid-card" onclick="openLightbox('bSiEgT74rQI')"><img src="https://img.youtube.com/vi/bSiEgT74rQI/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">The Cleggs — Wedding Video</span></div></div>
+  </div><div class="carousel-dots" id="d-weddings"></div></div>
+</section>
+
+<!-- CINEMATIC -->
+<section class="work-section" id="tab-chicago">
+  <p class="section-desc">Cinematic storytelling from Chicago and beyond</p>
+  <div class="grid-3">
+    <div class="vid-card" onclick="openLightbox('SCg5rQe101Y')"><img src="https://img.youtube.com/vi/SCg5rQe101Y/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">Efoiling the Chicago Skyline</span></div></div>
+    <div class="vid-card" onclick="openLightbox('kKAWo7BwClk')"><img src="https://img.youtube.com/vi/kKAWo7BwClk/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">Chicago Defrosting</span></div></div>
+    <div class="vid-card" onclick="openLightbox('wymNCEDn0VQ')"><img src="https://img.youtube.com/vi/wymNCEDn0VQ/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">Chicago Foggy Sunsets</span></div></div>
+    <div class="vid-card" onclick="openLightbox('-69J0kdfEJ0')"><img src="https://img.youtube.com/vi/-69J0kdfEJ0/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">Winter Walk in Chicago</span></div></div>
+    <div class="vid-card" onclick="openLightbox('McgnL0PlGpE')"><img src="https://img.youtube.com/vi/McgnL0PlGpE/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">Chicago River on a 5 Degree Day</span></div></div>
+    <div class="vid-card" onclick="openLightbox('TAEhN5oc6zU')"><img src="https://img.youtube.com/vi/TAEhN5oc6zU/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">Snow Day in Chicago</span></div></div>
+    <div class="vid-card" onclick="openLightbox('EVmjIH1yYXQ')"><img src="https://img.youtube.com/vi/EVmjIH1yYXQ/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">A Week in Costa Rica</span></div></div>
+  </div>
+  <div class="carousel-wrap"><div class="carousel" id="c-cinematic">
+    <div class="vid-card" onclick="openLightbox('SCg5rQe101Y')"><img src="https://img.youtube.com/vi/SCg5rQe101Y/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">Efoiling the Chicago Skyline</span></div></div>
+    <div class="vid-card" onclick="openLightbox('kKAWo7BwClk')"><img src="https://img.youtube.com/vi/kKAWo7BwClk/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">Chicago Defrosting</span></div></div>
+    <div class="vid-card" onclick="openLightbox('wymNCEDn0VQ')"><img src="https://img.youtube.com/vi/wymNCEDn0VQ/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">Chicago Foggy Sunsets</span></div></div>
+    <div class="vid-card" onclick="openLightbox('-69J0kdfEJ0')"><img src="https://img.youtube.com/vi/-69J0kdfEJ0/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">Winter Walk in Chicago</span></div></div>
+    <div class="vid-card" onclick="openLightbox('McgnL0PlGpE')"><img src="https://img.youtube.com/vi/McgnL0PlGpE/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">Chicago River on a 5 Degree Day</span></div></div>
+    <div class="vid-card" onclick="openLightbox('TAEhN5oc6zU')"><img src="https://img.youtube.com/vi/TAEhN5oc6zU/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">Snow Day in Chicago</span></div></div>
+    <div class="vid-card" onclick="openLightbox('EVmjIH1yYXQ')"><img src="https://img.youtube.com/vi/EVmjIH1yYXQ/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">A Week in Costa Rica</span></div></div>
+  </div><div class="carousel-dots" id="d-cinematic"></div></div>
+</section>
+
+<!-- EDITING -->
+<section class="work-section" id="tab-editing">
+  <p class="section-desc">Creative & experimental post-production work</p>
+  <div class="grid-3">
+    <div class="vid-card" onclick="openLightbox('a1BS52fuUCE')"><img src="https://img.youtube.com/vi/a1BS52fuUCE/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">After Effects Editing</span></div></div>
+    <div class="vid-card" onclick="openLightbox('YK1D38b9xf8')"><img src="https://img.youtube.com/vi/YK1D38b9xf8/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">After Effects Practice</span></div></div>
+    <div class="vid-card" onclick="openLightbox('V3MyaPha-Fw')"><img src="https://img.youtube.com/vi/V3MyaPha-Fw/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">Depth Map — After Effects</span></div></div>
+  </div>
+  <div class="carousel-wrap"><div class="carousel" id="c-editing">
+    <div class="vid-card" onclick="openLightbox('a1BS52fuUCE')"><img src="https://img.youtube.com/vi/a1BS52fuUCE/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">After Effects Editing</span></div></div>
+    <div class="vid-card" onclick="openLightbox('YK1D38b9xf8')"><img src="https://img.youtube.com/vi/YK1D38b9xf8/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">After Effects Practice</span></div></div>
+    <div class="vid-card" onclick="openLightbox('V3MyaPha-Fw')"><img src="https://img.youtube.com/vi/V3MyaPha-Fw/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">Depth Map — After Effects</span></div></div>
+  </div><div class="carousel-dots" id="d-editing"></div></div>
+</section>
+
+<!-- SOCIAL MEDIA -->
+<section class="work-section" id="tab-social">
+  <p class="section-desc">Reels, shorts & social-first content</p>
+  <div class="subsection">
+    <p class="subsection-title">Barlowe Sports Shorts</p>
+    <div class="grid-4">
+      <div class="vid-card portrait" onclick="openLightbox('K8eUV7kL3ng', true)"><img src="https://img.youtube.com/vi/K8eUV7kL3ng/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">Reel 1</span></div></div>
+      <div class="vid-card portrait" onclick="openLightbox('_xizWUQd2-g', true)"><img src="https://img.youtube.com/vi/_xizWUQd2-g/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">Reel 2</span></div></div>
+      <div class="vid-card portrait" onclick="openLightbox('8Jft_4yCzOQ', true)"><img src="https://img.youtube.com/vi/8Jft_4yCzOQ/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">Reel 3</span></div></div>
+    </div>
+    <div class="carousel-wrap"><div class="carousel" id="c-barlowe-shorts">
+      <div class="vid-card portrait" onclick="openLightbox('K8eUV7kL3ng', true)"><img src="https://img.youtube.com/vi/K8eUV7kL3ng/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">Reel 1</span></div></div>
+      <div class="vid-card portrait" onclick="openLightbox('_xizWUQd2-g', true)"><img src="https://img.youtube.com/vi/_xizWUQd2-g/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">Reel 2</span></div></div>
+      <div class="vid-card portrait" onclick="openLightbox('8Jft_4yCzOQ', true)"><img src="https://img.youtube.com/vi/8Jft_4yCzOQ/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">Reel 3</span></div></div>
+    </div><div class="carousel-dots" id="d-barlowe-shorts"></div></div>
+  </div>
+  <div class="subsection">
+    <p class="subsection-title">Creator / Behind the Scenes</p>
+    <div class="grid-4">
+      <div class="vid-card portrait" onclick="openLightbox('jmuYfw46pb8', true)"><img src="https://img.youtube.com/vi/jmuYfw46pb8/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">How I Film on iPhone 16 Pro</span></div></div>
+      <div class="vid-card portrait" onclick="openLightbox('lriecu9vZwM', true)"><img src="https://img.youtube.com/vi/lriecu9vZwM/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">How I Colorgrade on iPhone</span></div></div>
+      <div class="vid-card portrait" onclick="openLightbox('MZJ-Eq2xU2g', true)"><img src="https://img.youtube.com/vi/MZJ-Eq2xU2g/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">DJI Drone Chicago Sunset</span></div></div>
+      <div class="vid-card portrait" onclick="openLightbox('21GA37W8rOQ', true)"><img src="https://img.youtube.com/vi/21GA37W8rOQ/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">My First Time Using My DJI Drone</span></div></div>
+    </div>
+    <div class="carousel-wrap"><div class="carousel" id="c-bts">
+      <div class="vid-card portrait" onclick="openLightbox('jmuYfw46pb8', true)"><img src="https://img.youtube.com/vi/jmuYfw46pb8/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">How I Film on iPhone 16 Pro</span></div></div>
+      <div class="vid-card portrait" onclick="openLightbox('lriecu9vZwM', true)"><img src="https://img.youtube.com/vi/lriecu9vZwM/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">How I Colorgrade on iPhone</span></div></div>
+      <div class="vid-card portrait" onclick="openLightbox('MZJ-Eq2xU2g', true)"><img src="https://img.youtube.com/vi/MZJ-Eq2xU2g/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">DJI Drone Chicago Sunset</span></div></div>
+      <div class="vid-card portrait" onclick="openLightbox('21GA37W8rOQ', true)"><img src="https://img.youtube.com/vi/21GA37W8rOQ/maxresdefault.jpg" alt=""><div class="hover-overlay"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="#c8a96e" stroke-width="1.5"/><polygon points="24,18 46,30 24,42" fill="#c8a96e"/></svg><span class="vid-title">My First Time Using My DJI Drone</span></div></div>
+    </div><div class="carousel-dots" id="d-bts"></div></div>
+  </div>
+</section>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <div class="lightbox-inner" id="lightbox-inner">
+    <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+    <iframe id="lightbox-iframe" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <img src="https://i.imgur.com/AYIKUL1.png" alt="DurrCreative Logo">
+  <span class="footer-name">DurrCreative</span>
+  <span class="footer-sub">Chicago Videographer & Editor</span>
+</footer>
+
+<script>
+function showTab(id, el) {
+  document.querySelectorAll('.work-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  el.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function openLightbox(videoId, isPortrait) {
+  const inner = document.getElementById('lightbox-inner');
+  inner.classList.toggle('portrait-lb', !!isPortrait);
+  document.getElementById('lightbox-iframe').src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+  document.getElementById('lightbox').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox(e) {
+  if (e && e.target !== document.getElementById('lightbox') && !e.target.classList.contains('lightbox-close')) return;
+  document.getElementById('lightbox-iframe').src = '';
+  document.getElementById('lightbox').classList.remove('active');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+function initDots(carouselId, dotsId) {
+  const c = document.getElementById(carouselId);
+  const d = document.getElementById(dotsId);
+  if (!c || !d) return;
+  const items = c.querySelectorAll('.vid-card');
+  items.forEach((_, i) => {
+    const dot = document.createElement('span');
+    if (i === 0) dot.classList.add('active');
+    dot.addEventListener('click', () => c.scrollTo({ left: c.offsetWidth * i, behavior: 'smooth' }));
+    d.appendChild(dot);
+  });
+  c.addEventListener('scroll', () => {
+    const idx = Math.round(c.scrollLeft / c.offsetWidth);
+    d.querySelectorAll('span').forEach((s, i) => s.classList.toggle('active', i === idx));
+  });
+}
+
+['c-concerts-live','c-artist','c-barlowe','c-liquid','c-choose','c-weddings',
+ 'c-cinematic','c-editing','c-barlowe-shorts','c-bts','c-insta360-films','c-insta360-shorts'
+].forEach(id => initDots(id, id.replace('c-', 'd-')));
+</script>
+</body>
+</html>
